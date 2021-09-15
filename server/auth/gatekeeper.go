@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"fmt"
+	typesenforced "github.com/argoproj/argo-workflows/v3/server/auth/casbin/typesenforced"
 	"net/http"
 	"sort"
 	"strconv"
@@ -104,8 +105,8 @@ func (s *gatekeeper) Context(ctx context.Context) (context.Context, error) {
 	if err != nil {
 		return nil, err
 	}
-	ctx = context.WithValue(ctx, DynamicKey, clients.Dynamic) // TODO - wrap
-	ctx = context.WithValue(ctx, WfKey, casbin.WrapWorkflowInterface(clients.Workflow))
+	ctx = context.WithValue(ctx, DynamicKey, clients.Dynamic)
+	ctx = context.WithValue(ctx, WfKey, typesenforced.WrapWorkflowInterface(clients.Workflow))
 	ctx = context.WithValue(ctx, EventSourceKey, clients.EventSource) // TODO - wrap
 	ctx = context.WithValue(ctx, SensorKey, clients.Sensor)           // TODO - wrap
 	ctx = context.WithValue(ctx, KubeKey, clients.Kubernetes)         // TODO - wrap
